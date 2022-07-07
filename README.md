@@ -20,7 +20,7 @@ From the command line.
 Erik Rockenmeyer
 
 ## Screenshot
-
+![Screenshot 2022-07-06 233406](https://user-images.githubusercontent.com/94813971/177692071-fe152064-daa5-41fc-8476-8827aaba31e7.png)
 
 ## Questions
 Github: [erockenmeyer](https://github.com/erockenmeyer)
