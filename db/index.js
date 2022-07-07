@@ -1,7 +1,7 @@
 const db = require("./connection");
 
 class EmployeeDB {
-    constructor(db) {
+    constructor (db) {
         this.connection = db;
     }
 

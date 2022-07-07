@@ -2,51 +2,50 @@ const { prompt } = require("inquirer");
 const database = require("./db");
 require("console.table");
 
-askMenu();
+const startMenu = [
+    {
+        type: "list",
+        name: "choice",
+        message: "What would you like to do?",
+        choices: [
+            {
+                name: "View All Departments",
+                value: "view_departments"
+            },
+            {
+                name: "View All Roles",
+                value: "view_roles"
+            },
+            {
+                name: "View All Employees",
+                value: "view_employees"
+            },
+            {
+                name: "Add A Department",
+                value: "add_department"
+            },
+            {
+                name: "Add A Role",
+                value: "add_role"
+            },
+            {
+                name: "Add An Employee",
+                value: "add_employee"
+            },
+            {
+                name: "Update An Employee Role",
+                value: "update_employee"
+            },
+            {
+                name: "Quit",
+                value: "QUIT",
+            }
+        ]
+    }
+]
 
 // start menu
-async function askMenu() {
-    const { choice } = await prompt([
-        {
-            type: "list",
-            name: "choice",
-            message: "What would you like to do?",
-            choices: [
-                {
-                    name: "View All Departments",
-                    value: "view_departments"
-                },
-                {
-                    name: "View All Roles",
-                    value: "view_roles"
-                },
-                {
-                    name: "View All Employees",
-                    value: "view_employees"
-                },
-                {
-                    name: "Add A Department",
-                    value: "add_department"
-                },
-                {
-                    name: "Add A Role",
-                    value: "add_role"
-                },
-                {
-                    name: "Add An Employee",
-                    value: "add_employee"
-                },
-                {
-                    name: "Update An Employee Role",
-                    value: "update_employee"
-                },
-                {
-                    name: "Quit",
-                    value: "QUIT",
-                },
-            ],
-        },
-    ])
+function askMenu({ choice }) {
     // switch statement 
     switch (choice) {
         case "view_departments":
@@ -66,25 +65,24 @@ async function askMenu() {
         case "QUIT":
             return quit();
     }
-
 }
 
 async function viewAllDepartments() {
     const viewAD = await database.viewAllDepartments();
     console.table(viewAD);
-    askMenu();
+    init();
 }
 
 async function viewAllRoles() {
     const viewAR = await database.viewAllRoles();
     console.table(viewAR);
-    askMenu();
+    init();
 }
 
 async function viewAllEmployees() {
     const viewAE = await database.viewAllEmployees();
     console.table(viewAE);
-    askMenu();
+    init();
 }
 
 async function addADepartment() {
@@ -96,7 +94,7 @@ async function addADepartment() {
     ]);
     await database.addADepartment(department);
     console.log(`Added ${department.name} to the database`);
-    askMenu();
+    init();
 }
 
 
@@ -107,7 +105,7 @@ async function addARole() {
     departments.map((department) => {
         departmentChoices.push({ name: department.name, value: department.id });
     })
-    
+
     const role = await prompt([
         {
             name: "title",
@@ -127,7 +125,7 @@ async function addARole() {
     role.salary = parseInt(role.salary);
     await database.addARole(role);
     console.log(`Added ${role.title} to the database`);
-    askMenu();
+    init();
 }
 
 async function addAnEmployee() {
@@ -154,12 +152,12 @@ async function addAnEmployee() {
         },
         {
             name: "manager",
-            message: "Who is the manager of the new employee?"
+            message: "What is the employee's manager's id?"
         }
     ]);
     await database.addAnEmployee(employee);
     console.log(`Added ${employee.first_name} to the database`);
-    askMenu();
+    init();
 }
 
 async function updateEmployeeRole() {
@@ -188,10 +186,22 @@ async function updateEmployeeRole() {
         }
     ]);
     await database.updateEmployeeRole(employee.employee, employee.role);
-    askMenu();
+    init();
 }
 
 function quit() {
     console.log("Thank you")
     process.exit();
 };
+
+function init() {
+    prompt(startMenu)
+        .then(answer => {
+            askMenu(answer)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
+
+init();
