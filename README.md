@@ -14,7 +14,7 @@ To create departments, roles, and employees, and keep track of them from the com
 Download from github and run npm i in the project directory.
 
 ## Usage
-From the command line.
+From the command line. [Here is a walkthrough.](https://drive.google.com/file/d/16sKj9OelJ36okPZIHbFwYpROCu9T2rHd/view)
 
 ## Contributing
 Erik Rockenmeyer
